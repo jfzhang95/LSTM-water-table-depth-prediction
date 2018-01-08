@@ -1,9 +1,6 @@
 #!usr/bin/env python
 #-*- coding:utf-8 -*-
-"""
-@author: James Zhang
-@date:
-"""
+
 
 
 import numpy as np
@@ -14,24 +11,6 @@ from theano.tensor.shared_randomstreams import RandomStreams
 from collections import OrderedDict
 import copy
 import sys
-sys.setrecursionlimit(1000000) #例如这里设置为一百万
-
-
-def handle_binary_vector(given_list, k):
-    # handle_binary_vector[0] 返回二值化后的列表
-    # handle_binary_vector[1] 返回原列表
-    tmp_list = copy.deepcopy(given_list)
-    given_list.sort(reverse=True)
-    new_sort_array = given_list[0:k]
-    index_list = []
-    for each_num in new_sort_array:
-        index_list.append(tmp_list.index(each_num))
-    new_vector_list=np.zeros(len(given_list),dtype='int64')
-    for each_position in index_list:
-        new_vector_list[each_position]=1
-    return (new_vector_list,tmp_list)
-
-
 
 
 def floatX(X):
@@ -123,7 +102,7 @@ def momentum(loss, params, caches, learning_rate=0.1, rho=0.1, clip_at=0.0, scal
 
     for p, c, g in zip(params, caches, grads):
         if clip_at > 0.0:
-            grad = clip(g, clip_at)    # Clip（limit）the values in the array.这个方法会给出一个区间，在区间之外的数字将被剪除到区间的边缘
+            grad = clip(g, clip_at) 
         else:
             grad = g
 
@@ -139,7 +118,6 @@ def momentum(loss, params, caches, learning_rate=0.1, rho=0.1, clip_at=0.0, scal
 
 
 def get_params(layers):
-    # zhe ge hanshu de gongneng shi?
     params = []
     for layer in layers:
         for param in layer.get_params():
@@ -154,11 +132,6 @@ def make_caches(params):
         caches.append(theano.shared(floatX(np.zeros(p.get_value().shape))))
     return caches
 
-"""
-make_caches的功能:
-    提供和p(参数)同shape的全0矩阵
-    用与梯度下降方法
-"""
 
 def one_step_updates(layers):
     updates = []

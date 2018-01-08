@@ -1,9 +1,6 @@
 #!usr/bin/env python
 #-*- coding:utf-8 -*-
-"""
-@author: James Zhang
-@date: 2017-03-15
-"""
+
 
 import theano
 import theano.tensor as T
@@ -11,7 +8,7 @@ from collections import OrderedDict
 from methods import clip, scale
 import numpy as np
 import sys
-sys.setrecursionlimit(1000000) #例如这里设置为一百万
+
 
 def sgd(loss, params, learning_rate, clip_at=5.0, scale_norm=0.0):
 
@@ -38,7 +35,7 @@ def sgd_momentum(loss, params, learning_rate=1e-1, clip_at=5.0, scale_norm=0.0):
     updates = OrderedDict()
     grads = T.grad(cost=loss, wrt=params)
 
-    # 这个参数可以改变
+
     momentum=0.9
 
     for p, g in zip(params, grads):
@@ -61,7 +58,6 @@ def adagrad(loss, params, learning_rate, clip_at=5.0, scale_norm=0.0):
     updates = OrderedDict()
     grads = T.grad(cost=loss, wrt=params)
 
-    # 这个参数可以改变
     epsilon = 1e-8
 
     for p, g in zip(params, grads):
@@ -84,7 +80,7 @@ def adadelta(loss, params, learning_rate, clip_at=5.0, scale_norm=0.0):
     updates = OrderedDict()
     grads = T.grad(cost=loss, wrt=params)
 
-    # 这个参数可以改变
+
     epsilon = 1e-8
     rho = learning_rate
 
@@ -113,7 +109,6 @@ def rmsprop(loss, params, learning_rate=1e-2, clip_at=5.0, scale_norm=0.0):
     updates = OrderedDict()
     grads = T.grad(cost=loss, wrt=params)
 
-    # 这个参数可以改变
     epsilon = 1e-8
     decay_rate = 0.90
 
@@ -137,7 +132,7 @@ def adam(loss, params, learning_rate=1e-1, clip_at=5.0, max_norm=5.0):
     updates = OrderedDict()
     grads = T.grad(loss, params)
 
-    # 这个参数可以改变
+
     beta1 = 0.9
     beta2 = 0.995
     epsilon = 1e-8

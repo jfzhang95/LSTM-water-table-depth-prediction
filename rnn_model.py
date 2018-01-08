@@ -14,8 +14,6 @@ from optim import *
 import gzip
 import cPickle
 import sys
-sys.setrecursionlimit(1000000) #例如这里设置为一百万
-
 
 
 ##############################################

@@ -1,9 +1,4 @@
-#!usr/bin/env python
 #-*- coding:utf-8 -*-
-"""
-@author: James Zhang
-@date: 2017-03-15
-"""
 
 
 
@@ -12,8 +7,6 @@ import theano
 import theano.tensor as T
 from methods import sigmoid, softmax, dropout, floatX,random_weights4eva, zeros, random_weights, random_weights4wd
 import sys
-sys.setrecursionlimit(1000000) #例如这里设置为一百万
-
 
 
 
@@ -195,7 +188,7 @@ class LSTMLayer4wd(NNLayer):
         outputs_info = [self.h0, self.s0]
 
         ([outputs, states], updates) = theano.scan(
-            fn=self.one_step,   #function
+            fn=self.one_step,   # function
             sequences=self.X,
             outputs_info = outputs_info,
             go_backwards=self.go_backwards
