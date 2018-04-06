@@ -7,7 +7,7 @@ import theano.tensor as T
 from collections import OrderedDict
 from methods import clip, scale
 import numpy as np
-import sys
+
 
 
 def sgd(loss, params, learning_rate, clip_at=5.0, scale_norm=0.0):

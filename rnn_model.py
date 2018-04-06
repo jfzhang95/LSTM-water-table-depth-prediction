@@ -12,8 +12,8 @@ import types
 from optim import *
 
 import gzip
-import cPickle
-import sys
+import pickle
+
 
 
 ##############################################
@@ -94,11 +94,11 @@ class LSTM4eva:
                 to_save[p.name] = p.get_value()
 
         with gzip.open(filename, 'wb') as f:
-            cPickle.dump(to_save, f)
+            pickle.dump(to_save, f)
 
     def load_model_params(self, filename):
         f = gzip.open(filename, 'rb')
-        to_load = cPickle.load(f)
+        to_load = pickle.load(f)
         assert (to_load['num_input'] == self.num_input)
         assert (to_load['num_output'] == self.num_output)
 
@@ -192,11 +192,11 @@ class LSTM4wd:
                 to_save[p.name] = p.get_value()
 
         with gzip.open(filename, 'wb') as f:
-            cPickle.dump(to_save, f)
+            pickle.dump(to_save, f)
 
     def load_model_params(self, filename):
         f = gzip.open(filename, 'rb')
-        to_load = cPickle.load(f)
+        to_load = pickle.load(f)
         assert (to_load['num_input'] == self.num_input)
         assert (to_load['num_output'] == self.num_output)
 
@@ -293,12 +293,12 @@ class LSTM4dep:
                 to_save[p.name] = p.get_value()
 
         with gzip.open(filename, 'wb') as f:
-            cPickle.dump(to_save, f)
+            pickle.dump(to_save, f)
 
 
     def load_model_params(self, filename):
         f = gzip.open(filename, 'rb')
-        to_load = cPickle.load(f)
+        to_load = pickle.load(f)
         assert (to_load['num_input'] == self.num_input)
         assert (to_load['num_output'] == self.num_output)
 
@@ -390,12 +390,12 @@ class ANN4dep:
                 to_save[p.name] = p.get_value()
 
         with gzip.open(filename, 'wb') as f:
-            cPickle.dump(to_save, f)
+            pickle.dump(to_save, f)
 
 
     def load_model_params(self, filename):
         f = gzip.open(filename, 'rb')
-        to_load = cPickle.load(f)
+        to_load = pickle.load(f)
         assert (to_load['num_input'] == self.num_input)
         assert (to_load['num_output'] == self.num_output)
 
@@ -477,12 +477,12 @@ class doubleLSTM4dep:
                 to_save[p.name] = p.get_value()
 
         with gzip.open(filename, 'wb') as f:
-            cPickle.dump(to_save, f)
+            pickle.dump(to_save, f)
 
 
     def load_model_params(self, filename):
         f = gzip.open(filename, 'rb')
-        to_load = cPickle.load(f)
+        to_load = pickle.load(f)
         assert (to_load['num_input'] == self.num_input)
         assert (to_load['num_output'] == self.num_output)
 
@@ -575,12 +575,12 @@ class LSTM4alleva:
                 to_save[p.name] = p.get_value()
 
         with gzip.open(filename, 'wb') as f:
-            cPickle.dump(to_save, f)
+            pickle.dump(to_save, f)
 
 
     def load_model_params(self, filename):
         f = gzip.open(filename, 'rb')
-        to_load = cPickle.load(f)
+        to_load = pickle.load(f)
         assert (to_load['num_input'] == self.num_input)
         assert (to_load['num_output'] == self.num_output)
 

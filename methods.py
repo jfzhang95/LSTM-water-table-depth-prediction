@@ -9,8 +9,7 @@ import theano.tensor as T
 from theano.ifelse import ifelse
 from theano.tensor.shared_randomstreams import RandomStreams
 from collections import OrderedDict
-import copy
-import sys
+
 
 
 def floatX(X):

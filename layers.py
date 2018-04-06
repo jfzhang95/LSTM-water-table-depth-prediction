@@ -6,7 +6,7 @@ import numpy as np
 import theano
 import theano.tensor as T
 from methods import sigmoid, softmax, dropout, floatX,random_weights4eva, zeros, random_weights, random_weights4wd
-import sys
+
 
 
 
@@ -27,8 +27,6 @@ class NNLayer(object):
 
     def reset_state(self):
         return
-
-
 
 
 class LSTMLayer(NNLayer):
@@ -200,16 +198,6 @@ class LSTMLayer4wd(NNLayer):
     def reset_state(self):
         self.h0 = theano.shared(floatX(np.zeros(self.num_hidden)))
         self.s0 = theano.shared(floatX(np.zeros(self.num_hidden)))
-
-
-
-
-
-
-
-
-
-
 
 
 
