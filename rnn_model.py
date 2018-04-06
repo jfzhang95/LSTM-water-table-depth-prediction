@@ -7,7 +7,7 @@
 
 
 from layers import *
-from methods import get_params, floatX
+from utils import get_params, floatX
 import types
 from optim import *
 

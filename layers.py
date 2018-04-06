@@ -1,18 +1,12 @@
 #-*- coding:utf-8 -*-
 
-
-
 import numpy as np
 import theano
 import theano.tensor as T
-from methods import sigmoid, softmax, dropout, floatX,random_weights4eva, zeros, random_weights, random_weights4wd
-
-
+from utils import sigmoid, softmax, dropout, floatX,random_weights4eva, zeros, random_weights, random_weights4wd
 
 
 class NNLayer(object):
-
-
     def get_params_names(self):
         return ['UNK' if p.name is None else p.name for p in self.param]
 
@@ -113,9 +107,6 @@ class LSTMLayer(NNLayer):
         self.s0 = theano.shared(floatX(np.zeros(self.num_hidden)))
 
 
-
-
-
 class LSTMLayer4wd(NNLayer):
 
     def __init__(self, num_input, num_hidden, input_layers=None, name="", go_backwards=False):
@@ -201,7 +192,6 @@ class LSTMLayer4wd(NNLayer):
 
 
 
-
 class FullyConnectedLayer(NNLayer):
     """
     """
@@ -241,9 +231,6 @@ class SigmoidLayer(NNLayer):
 
     def output(self):
         return sigmoid(T.dot(self.X, self.W_yh) + self.b_y)
-
-
-
 
 
 class InputLayer(NNLayer):
@@ -299,7 +286,3 @@ class DropoutLayer(NNLayer):
 
     def output(self):
         return dropout(self.X, self.dropout_prob)
-
-
-
-
