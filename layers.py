@@ -4,7 +4,8 @@
 import numpy as np
 import theano
 import theano.tensor as T
-from utils import dropout, floatX, zeros, random_weights
+from theano.tensor.shared_randomstreams import RandomStreams
+from utils import floatX
 
 
 class NNLayer(object):
@@ -31,12 +32,12 @@ class LSTMLayer(NNLayer):
 
     def __init__(self, num_input, num_hidden, input_layers=None, name="lstm"):
         """
-        Define LSTM layer
+        LSTM layer
 
         Arguments:
-            num_input:
-            num_hidden:
-
+            num_input: previous layer's size
+            num_hidden: hidden neurons' size
+            input_layers: previous layer
         """
         self.name = name
         self.num_input = num_input
@@ -50,20 +51,20 @@ class LSTMLayer(NNLayer):
         self.h0 = theano.shared(floatX(np.zeros(num_hidden)))
         self.s0 = theano.shared(floatX(np.zeros(num_hidden)))
 
-        self.W_gx = random_weights((num_input, num_hidden), name=self.name+"W_gx")
-        self.W_ix = random_weights((num_input, num_hidden), name=self.name+"W_ix")
-        self.W_fx = random_weights((num_input, num_hidden), name=self.name+"W_fx")
-        self.W_ox = random_weights((num_input, num_hidden), name=self.name+"W_ox")
+        self.W_gx = self._random_weights((num_input, num_hidden), name=self.name+"W_gx")
+        self.W_ix = self._random_weights((num_input, num_hidden), name=self.name+"W_ix")
+        self.W_fx = self._random_weights((num_input, num_hidden), name=self.name+"W_fx")
+        self.W_ox = self._random_weights((num_input, num_hidden), name=self.name+"W_ox")
 
-        self.W_gh = random_weights((num_hidden, num_hidden), name=self.name+"W_gh")
-        self.W_ih = random_weights((num_hidden, num_hidden), name=self.name+"W_ih")
-        self.W_fh = random_weights((num_hidden, num_hidden), name=self.name+"W_fh")
-        self.W_oh = random_weights((num_hidden, num_hidden), name=self.name+"W_oh")
+        self.W_gh = self._random_weights((num_hidden, num_hidden), name=self.name+"W_gh")
+        self.W_ih = self._random_weights((num_hidden, num_hidden), name=self.name+"W_ih")
+        self.W_fh = self._random_weights((num_hidden, num_hidden), name=self.name+"W_fh")
+        self.W_oh = self._random_weights((num_hidden, num_hidden), name=self.name+"W_oh")
 
-        self.b_g = zeros(num_hidden, name=self.name+"b_g")
-        self.b_i = zeros(num_hidden, name=self.name+"b_i")
-        self.b_f = zeros(num_hidden, name=self.name+"b_f")
-        self.b_o = zeros(num_hidden, name=self.name+"b_o")
+        self.b_g = self._zeros(num_hidden, name=self.name+"b_g")
+        self.b_i = self._zeros(num_hidden, name=self.name+"b_i")
+        self.b_f = self._zeros(num_hidden, name=self.name+"b_f")
+        self.b_o = self._zeros(num_hidden, name=self.name+"b_o")
 
         self.params = [self.W_gx, self.W_ix, self.W_ox, self.W_fx,
                        self.W_gh, self.W_ih, self.W_oh, self.W_fh,
@@ -72,10 +73,17 @@ class LSTMLayer(NNLayer):
 
         self.output()
 
+    def _random_weights(self, shape, name=None):
+        # return theano.shared(floatX(np.random.randn(*shape) * 0.01), name=name)
+        return theano.shared(floatX(np.random.uniform(size=shape, low=-1, high=1)), name=name)
+
+    def _zeros(self, shape, name=""):
+        return theano.shared(floatX(np.zeros(shape)), name=name)
+
     def get_params(self):
         return self.params
 
-    def one_step(self, x, h_tm1, s_tm1):
+    def _one_step(self, x, h_tm1, s_tm1):
         """
         Run the forward pass for a single time step of a LSTM layer
 
@@ -101,7 +109,7 @@ class LSTMLayer(NNLayer):
         outputs_info = [self.h0, self.s0]
 
         ([outputs, _], updates) = theano.scan(
-            fn=self.one_step,
+            fn=self._one_step,
             sequences=self.X,
             outputs_info = outputs_info,
             go_backwards=go_backwards
@@ -109,13 +117,14 @@ class LSTMLayer(NNLayer):
         return outputs
 
 
-    def reset_state(self):
+    def _reset_state(self):
         self.h0 = theano.shared(floatX(np.zeros(self.num_hidden)))
         self.s0 = theano.shared(floatX(np.zeros(self.num_hidden)))
 
 
 class FullyConnectedLayer(NNLayer):
     """
+    Fully-connected layer
     """
     def __init__(self, num_input, num_output, input_layers, name=""):
 
@@ -123,9 +132,16 @@ class FullyConnectedLayer(NNLayer):
             self.X = T.concatenate([input_layer.output() for input_layer in input_layers], axis=1)
         else:
             self.X = input_layers[0].output()
-        self.W_yh = random_weights((num_input, num_output),name="W_yh_FC")
-        self.b_y = zeros(num_output, name="b_y_FC")
+        self.W_yh = self._random_weights((num_input, num_output),name="W_yh_FC")
+        self.b_y = self._zeros(num_output, name="b_y_FC")
         self.params = [self.W_yh, self.b_y]
+
+    def _random_weights(self, shape, name=None):
+        # return theano.shared(floatX(np.random.randn(*shape) * 0.01), name=name)
+        return theano.shared(floatX(np.random.uniform(size=shape, low=-1, high=1)), name=name)
+
+    def _zeros(self, shape, name=""):
+        return theano.shared(floatX(np.zeros(shape)), name=name)
 
     def output(self):
         return T.dot(self.X, self.W_yh) + self.b_y
@@ -136,6 +152,7 @@ class FullyConnectedLayer(NNLayer):
 
 class InputLayer(NNLayer):
     """
+    Input layer
     """
     def __init__(self, X, name=""):
         self.name = name
@@ -151,8 +168,10 @@ class InputLayer(NNLayer):
 
 class DropoutLayer(NNLayer):
     """
+    Dropout layer
     """
-    def __init__(self, input_layer, name="dropout", dropout_prob=0.5):
+    def __init__(self, input_layer, dropout_prob=0.5, name="dropout"):
+        self.name = name
         self.X = input_layer.output()
         self.params = []
         self.dropout_prob = dropout_prob
@@ -161,4 +180,15 @@ class DropoutLayer(NNLayer):
         return self.params
 
     def output(self):
-        return dropout(self.X, self.dropout_prob)
+        return self._dropout(self.X, self.dropout_prob)
+
+
+    def _dropout(self, X, dropout_prob=0.0):
+        if dropout_prob < 0. or dropout_prob > 1.:
+            raise Exception('Dropout level must be in interval [0, 1]')
+        retain_prob = 1 - dropout_prob
+        srng = RandomStreams(seed=1234)
+        X *= srng.binomial(X.shape, p=retain_prob, dtype=theano.config.floatX)
+        if dropout_prob != 0.0:
+            X *= retain_prob
+        return X
