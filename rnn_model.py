@@ -3,7 +3,6 @@
 
 from layers import *
 from utils import *
-import types
 import gzip
 import pickle
 
@@ -14,7 +13,20 @@ import pickle
 
 class LSTM_FC_Model:
 
-    def __init__(self, num_input=256, num_hidden=[64,64], num_output=500, clip_at=5.0, scale_norm=0.0):
+    def __init__(self, num_input=5, num_hidden=[64,64], num_output=1, clip_at=0.0, scale_norm=0.0):
+        """
+        LSTM-FC Model, lstm layer contributes to learning time series data, dropout helps to prevent overfitting.
+
+        Arguments:
+            num_input: the number of input variables
+            num_hidden: the number of neurons in each hidden layer
+            num_output: output size (one in this study)
+            clip_at: gradient clip
+            scale_norm: gradient norm scale
+
+        Returns:
+            output (water table depth in this study)
+        """
         X = T.fmatrix()
         Y = T.fmatrix()
         learning_rate = T.fscalar()
@@ -31,17 +43,19 @@ class LSTM_FC_Model:
         prev_layer = inputs
 
         self.layers = [inputs]
-        if type(num_hidden) is types.IntType:
-            lstm = LSTMLayer(num_prev, num_hidden, input_layers=[prev_layer], name="lstm", go_backwards=False)
+        # one hidden lstm layer
+        if len(num_hidden) == 1:
+            lstm = LSTMLayer(num_prev, num_hidden, input_layers=[prev_layer], name="lstm")
             num_prev = num_hidden
             prev_layer = lstm
             self.layers.append(prev_layer)
             prev_layer = DropoutLayer(prev_layer, dropout_prob=dropout_prob)
             self.layers.append(prev_layer)
 
+        # more than one hidden lstem layer
         else:
             for i, num_curr in enumerate(num_hidden):
-                lstm = LSTMLayer(num_prev, num_curr, input_layers=[prev_layer], name="lstm{0}".format(i + 1), go_backwards=False)
+                lstm = LSTMLayer(num_prev, num_curr, input_layers=[prev_layer], name="lstm{0}".format(i + 1))
 
                 num_prev = num_curr
                 prev_layer = lstm
@@ -102,7 +116,20 @@ class LSTM_FC_Model:
 
 class FFNN_Model:
 
-    def __init__(self, num_input=256, num_hidden=[64,64], num_output=500, clip_at=5.0, scale_norm=0.0):
+    def __init__(self, num_input=256, num_hidden=[64,64], num_output=1, clip_at=0.0, scale_norm=0.0):
+        """
+        FFNN Model, two hidden fully-connected layers.
+
+        Arguments:
+            num_input: the number of input variables
+            num_hidden: the number of neurons in each hidden layer
+            num_output: output size (one in this study)
+            clip_at: gradient clip
+            scale_norm: gradient norm scale
+
+        Returns:
+            output (water table depth in this study)
+        """
         X = T.fmatrix()
         Y = T.fmatrix()
         learning_rate = T.fscalar()
@@ -119,29 +146,16 @@ class FFNN_Model:
         prev_layer = inputs
 
         self.layers = [inputs]
-        if type(num_hidden) is types.IntType:
-            ann = FullyConnectedLayer(num_prev, num_hidden, input_layers=[prev_layer], name="ann")
-            num_prev = num_hidden
-            prev_layer = ann
-            self.layers.append(prev_layer)
-            prev_layer = DropoutLayer(prev_layer, dropout_prob=dropout_prob)
-            self.layers.append(prev_layer)
-
-        else:
-            for i, num_curr in enumerate(num_hidden):
-                lstm = FullyConnectedLayer(num_prev, num_curr, input_layers=[prev_layer], name="lstm{0}".format(i + 1), go_backwards=False)
-
-                num_prev = num_curr
-                prev_layer = lstm
-                self.layers.append(prev_layer)
-                prev_layer = DropoutLayer(prev_layer, dropout_prob=dropout_prob)
-                self.layers.append(prev_layer)
+        ann = FullyConnectedLayer(num_prev, num_hidden, input_layers=[prev_layer], name="ann")
+        num_prev = num_hidden
+        prev_layer = ann
+        self.layers.append(prev_layer)
+        prev_layer = DropoutLayer(prev_layer, dropout_prob=dropout_prob)
+        self.layers.append(prev_layer)
 
         FC = FullyConnectedLayer(num_prev, num_output, input_layers=[prev_layer], name="yhat")
         self.layers.append(FC)
         Y_hat = FC.output()
-
-
 
         loss = T.sum((Y - Y_hat) ** 2) + 0.5 * T.sum(FC.W_yh * FC.W_yh)
         params = get_params(self.layers)
@@ -190,8 +204,20 @@ class FFNN_Model:
 #########################################
 
 class Double_LSTM_Model:
+    """
+    Double-LSTM Model, two hidden lstm layers.
 
-    def __init__(self, num_input=256, num_hidden=[64,64], num_output=500, clip_at=5.0, scale_norm=0.0):
+    Arguments:
+        num_input: the number of input variables
+        num_hidden: the number of neurons in each hidden layer
+        num_output: output size (one in this study)
+        clip_at: gradient clip
+        scale_norm: gradient norm scale
+
+    Returns:
+        output (water table depth in this study)
+    """
+    def __init__(self, num_input=256, num_hidden=[64,64], num_output=1, clip_at=0.0, scale_norm=0.0):
         X = T.fmatrix()
         Y = T.fmatrix()
         learning_rate = T.fscalar()
@@ -208,13 +234,13 @@ class Double_LSTM_Model:
         prev_layer = inputs
 
         self.layers = [inputs]
-        lstm = LSTMLayer(num_prev, num_hidden, input_layers=[prev_layer], name="lstm{0}".format(1), go_backwards=False)
+        lstm = LSTMLayer(num_prev, num_hidden, input_layers=[prev_layer], name="lstm{0}".format(1))
         prev_layer = lstm
         self.layers.append(prev_layer)
         prev_layer = DropoutLayer(prev_layer, dropout_prob=dropout_prob)
         self.layers.append(prev_layer)
 
-        lstm = LSTMLayer(num_hidden, num_output, input_layers=[prev_layer], name="lstm{0}".format(2), go_backwards=False)
+        lstm = LSTMLayer(num_hidden, num_output, input_layers=[prev_layer], name="lstm{0}".format(2))
         self.layers.append(lstm)
             
         Y_hat = lstm.output()
@@ -224,7 +250,7 @@ class Double_LSTM_Model:
         loss = T.sum((Y - Y_hat) ** 2)
         params = get_params(self.layers)
 
-        updates, grads = sgd(loss, params, learning_rate)
+        updates, grads = sgd(loss, params, learning_rate, self.clip_at, self.scale_norm)
 
 
         self.train_func = theano.function([X, Y, learning_rate, dropout_prob], loss, updates=updates, allow_input_downcast=True)

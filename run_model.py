@@ -2,8 +2,8 @@
 #-*- coding:utf-8 -*-
 
 
-from rnn_model import *
-import numpy as np
+from rnn_model import LSTM_FC_Model, FFNN_Model, Double_LSTM_Model
+
 
 def LSTM_pred_dep(X, Y, X_test=None, iters=1000, learning_rate=1e-1, dropout_prob=0.5):
     print("lr:", learning_rate)

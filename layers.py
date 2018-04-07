@@ -29,15 +29,14 @@ class NNLayer(object):
 
 class LSTMLayer(NNLayer):
 
-    def __init__(self, num_input, num_hidden, input_layers=None, name="lstm", go_backwards=False):
+    def __init__(self, num_input, num_hidden, input_layers=None, name="lstm"):
         """
         Define LSTM layer
 
         Arguments:
             num_input:
             num_hidden:
-            go_backwards: a flag indicating if ``scan`` should go
-        backwards through the sequences.
+
         """
         self.name = name
         self.num_input = num_input
@@ -50,8 +49,6 @@ class LSTMLayer(NNLayer):
 
         self.h0 = theano.shared(floatX(np.zeros(num_hidden)))
         self.s0 = theano.shared(floatX(np.zeros(num_hidden)))
-
-        self.go_backwards = go_backwards
 
         self.W_gx = random_weights((num_input, num_hidden), name=self.name+"W_gx")
         self.W_ix = random_weights((num_input, num_hidden), name=self.name+"W_ix")
@@ -99,15 +96,15 @@ class LSTMLayer(NNLayer):
         return h, s
 
 
-    def output(self, train=True):
+    def output(self, go_backwards=False):
 
         outputs_info = [self.h0, self.s0]
 
-        ([outputs, states], updates) = theano.scan(
+        ([outputs, _], updates) = theano.scan(
             fn=self.one_step,
             sequences=self.X,
             outputs_info = outputs_info,
-            go_backwards=self.go_backwards
+            go_backwards=go_backwards
         )
         return outputs
 
@@ -131,7 +128,6 @@ class FullyConnectedLayer(NNLayer):
         self.params = [self.W_yh, self.b_y]
 
     def output(self):
-        # return T.nnet.sigmoid(T.dot(self.X, self.W_yh) + self.b_y)
         return T.dot(self.X, self.W_yh) + self.b_y
 
     def get_params(self):
@@ -149,7 +145,7 @@ class InputLayer(NNLayer):
     def get_params(self):
         return self.params
 
-    def output(self, train=False):
+    def output(self):
         return self.X
 
 

@@ -103,23 +103,23 @@ def one_step_updates(layers):
 
 
 
-def sgd(loss, params, learning_rate, clip_at=5.0, scale_norm=0.0):
+def sgd(loss, params, learning_rate, clip_at=0.0, scale_norm=0.0):
     updates = OrderedDict()
     grads = T.grad(cost=loss, wrt=params)
     epsilon = 1e-8
 
     for p, g in zip(params, grads):
-        # if clip_at > 0.0:
-        #     grad = clip(g, clip_at)
-        # else:
-        #     grad = g
-        #
-        # if scale_norm > 0.0:
-        #     grad = scale(grad, scale_norm)
-        grad_norm = g.norm(L=2)
-        grad = (T.minimum(clip_at, grad_norm) / (grad_norm + epsilon)) * g
+        if clip_at > 0.0:
+            grad = clip(g, clip_at)
+        else:
+            grad = g
 
+        if scale_norm > 0.0:
+            grad = scale(grad, scale_norm)
+        grad_norm = grad.norm(L=2)
+        grad = (T.minimum(clip_at, grad_norm) / (grad_norm + epsilon)) * grad
         updates[p] = p - learning_rate * grad
+
     return updates, grads
 
 

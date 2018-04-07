@@ -9,7 +9,6 @@ from utils import clip, scale
 import numpy as np
 
 
-
 def sgd(loss, params, learning_rate, clip_at=5.0, scale_norm=0.0):
 
     updates = OrderedDict()
