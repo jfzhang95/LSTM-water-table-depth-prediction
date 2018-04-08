@@ -92,7 +92,7 @@ class LSTMLayer(NNLayer):
             s_tm1: initial s (cell state)
 
         Returns:
-            h and s after one forward pass step
+            h and s after one forward step
         """
         g = T.tanh(T.dot(x, self.W_gx) + T.dot(h_tm1, self.W_gh) + self.b_g)
         i = T.nnet.sigmoid(T.dot(x, self.W_ix) + T.dot(h_tm1, self.W_ih) + self.b_i)

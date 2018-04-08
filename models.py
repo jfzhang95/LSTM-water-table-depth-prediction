@@ -81,6 +81,7 @@ class LSTM_FC_Model:
     def fit(self, X, Y, learning_rate, dropout_prob):
         return self.train_func(X, Y, learning_rate, dropout_prob)
 
+
     def predict(self, X):
         return self.predict_func(X, 0.0)
 
@@ -255,6 +256,7 @@ class Double_LSTM_Model:
 
     def fit(self, X, Y, learning_rate, dropout_prob):
         return self.train_func(X, Y, learning_rate, dropout_prob)
+
 
     def predict(self, X):
         return self.predict_func(X, 0.0)  # in predict time, dropout = 0
