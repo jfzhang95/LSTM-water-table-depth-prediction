@@ -7,6 +7,7 @@ In progress
 ## Requirements
 ```
 python>=3.5.2
+Theano>=1.0.1
 numpy>=1.14.0
 scipy>=1.0.0
 opencv-python>=3.3.0
