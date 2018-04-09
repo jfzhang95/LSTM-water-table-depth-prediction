@@ -6,7 +6,6 @@ from utils import *
 import gzip
 import pickle
 
-
 #########################################
 #       LSTM-FC Model architecture      #
 #########################################
@@ -44,7 +43,7 @@ class LSTM_FC_Model:
 
         self.layers = [inputs]
         # one hidden lstm layer
-        if len(num_hidden) == 1:
+        if isinstance(num_hidden, int):
             lstm = LSTMLayer(num_prev, num_hidden, input_layers=[prev_layer], name="lstm")
             num_prev = num_hidden
             prev_layer = lstm
@@ -53,7 +52,7 @@ class LSTM_FC_Model:
             self.layers.append(prev_layer)
 
         # more than one hidden lstm layer
-        else:
+        if isinstance(num_hidden, list):
             for i, num_curr in enumerate(num_hidden):
                 lstm = LSTMLayer(num_prev, num_curr, input_layers=[prev_layer], name="lstm{0}".format(i + 1))
 
@@ -67,10 +66,10 @@ class LSTM_FC_Model:
         self.layers.append(fc)
         Y_hat = fc.output()
 
-        loss = T.sum((Y - Y_hat) ** 2)
+        loss = T.sum((Y - Y_hat) ** 2) + 0.5 * T.sum(fc.W_yh * fc.W_yh)
         params = get_params(self.layers)
 
-        updates, grads = sgd(loss, params, learning_rate)
+        updates, grads = adam(loss, params, learning_rate)
 
 
         self.train_func = theano.function([X, Y, learning_rate, dropout_prob], loss, updates=updates, allow_input_downcast=True)

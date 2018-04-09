@@ -3,7 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-data_yigan.csv
+checkpoints/*
+.ipynb_checkpoints
 
 # C extensions
 *.so

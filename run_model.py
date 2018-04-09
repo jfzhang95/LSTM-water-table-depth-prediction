@@ -6,6 +6,8 @@ from models import LSTM_FC_Model, FFNN_Model, Double_LSTM_Model
 
 
 def LSTM_FC_pred_dep(X, Y, X_test=None, iters=20000, learning_rate=1e-4, dropout_prob=0.5):
+    if dropout_prob > 1. or dropout_prob < 0.:
+        raise Exception('Dropout level must be in interval [0, 1]')
     print("lr:", learning_rate)
     print("dropout:", dropout_prob)
     print("iterations:", iters)

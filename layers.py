@@ -182,10 +182,7 @@ class DropoutLayer(NNLayer):
     def output(self):
         return self._dropout(self.X, self.dropout_prob)
 
-
     def _dropout(self, X, dropout_prob=0.0):
-        if dropout_prob < 0. or dropout_prob > 1.:
-            raise Exception('Dropout level must be in interval [0, 1]')
         retain_prob = 1 - dropout_prob
         srng = RandomStreams(seed=1234)
         X *= srng.binomial(X.shape, p=retain_prob, dtype=theano.config.floatX)
