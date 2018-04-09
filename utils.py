@@ -32,20 +32,18 @@ def get_params(layers):
     return params
 
 
-def sgd(loss, params, learning_rate, clip_at=0.0, scale_norm=0.0):
+def sgd(loss, params, learning_rate, clip_at=5.0, scale_norm=5.0):
     """ Stochastic Gradient Descent"""
     updates = OrderedDict()
     grads = T.grad(cost=loss, wrt=params)
     epsilon = 1e-8
 
-    for p, g in zip(params, grads):
-        if clip_at > 0.0:
-            grad = clip(g, clip_at)
-        else:
-            grad = g
-
-        if scale_norm > 0.0:
-            grad = scale(grad, scale_norm)
+    for p, grad in zip(params, grads):
+        # if clip_at > 0.0:
+        #     grad = clip(grad, clip_at)
+        #
+        # if scale_norm > 0.0:
+        #     grad = scale(grad, scale_norm)
         grad_norm = grad.norm(L=2)
         grad = (T.minimum(clip_at, grad_norm) / (grad_norm + epsilon)) * grad
         updates[p] = p - learning_rate * grad
@@ -53,7 +51,7 @@ def sgd(loss, params, learning_rate, clip_at=0.0, scale_norm=0.0):
     return updates, grads
 
 
-def adam(loss, params, learning_rate=1e-1, clip_at=0.0, scale_norm=0.0):
+def adam(loss, params, learning_rate=1e-1, clip_at=5.0, scale_norm=5.0):
     updates = OrderedDict()
     grads = T.grad(loss, params)
 
@@ -61,7 +59,7 @@ def adam(loss, params, learning_rate=1e-1, clip_at=0.0, scale_norm=0.0):
     beta2 = 0.995
     epsilon = 1e-8
 
-    for p, g in zip(params, grads):
+    for p, grad in zip(params, grads):
         c = theano.shared(np.zeros_like(p.get_value(borrow=True)))
         # if clip_at > 0.0:
         #     grad = clip(g, clip_at)
@@ -71,8 +69,8 @@ def adam(loss, params, learning_rate=1e-1, clip_at=0.0, scale_norm=0.0):
         # if scale_norm > 0.0:
         #     grad = scale(grad, scale_norm)
 
-        grad_norm = g.norm(L=2)
-        grad = (T.minimum(scale_norm, grad_norm) / (grad_norm + epsilon)) * g
+        grad_norm = grad.norm(L=2)
+        grad = (T.minimum(clip_at, grad_norm) / (grad_norm + epsilon)) * grad
 
         m = c
         v = c

@@ -26,6 +26,8 @@ class LSTM_FC_Model:
         Returns:
             output (water table depth in this study)
         """
+        print('Build LSTM_FC Model......')
+
         X = T.fmatrix()
         Y = T.fmatrix()
         learning_rate = T.fscalar()
@@ -42,34 +44,26 @@ class LSTM_FC_Model:
         prev_layer = inputs
 
         self.layers = [inputs]
-        # one hidden lstm layer
-        if isinstance(num_hidden, int):
-            lstm = LSTMLayer(num_prev, num_hidden, input_layers=[prev_layer], name="lstm")
-            num_prev = num_hidden
+
+        for i, num_curr in enumerate(num_hidden):
+            lstm = LSTMLayer(num_prev, num_curr, input_layers=[prev_layer], name="lstm{0}".format(i + 1))
+
+            num_prev = num_curr
             prev_layer = lstm
             self.layers.append(prev_layer)
             prev_layer = DropoutLayer(prev_layer, dropout_prob)
             self.layers.append(prev_layer)
 
-        # more than one hidden lstm layer
-        if isinstance(num_hidden, list):
-            for i, num_curr in enumerate(num_hidden):
-                lstm = LSTMLayer(num_prev, num_curr, input_layers=[prev_layer], name="lstm{0}".format(i + 1))
-
-                num_prev = num_curr
-                prev_layer = lstm
-                self.layers.append(prev_layer)
-                prev_layer = DropoutLayer(prev_layer, dropout_prob)
-                self.layers.append(prev_layer)
-
         fc = FullyConnectedLayer(num_prev, num_output, input_layers=[prev_layer], name="yhat")
         self.layers.append(fc)
         Y_hat = fc.output()
 
-        loss = T.sum((Y - Y_hat) ** 2) + 0.5 * T.sum(fc.W_yh * fc.W_yh)
+        loss = T.sum((Y - Y_hat) ** 2)
         params = get_params(self.layers)
 
-        updates, grads = adam(loss, params, learning_rate)
+        # You can also use adam optimization method
+        updates, grads = sgd(loss, params, learning_rate)
+        # updates, grads = adam(loss, params, learning_rate)
 
 
         self.train_func = theano.function([X, Y, learning_rate, dropout_prob], loss, updates=updates, allow_input_downcast=True)
@@ -130,6 +124,8 @@ class FFNN_Model:
         Returns:
             output (water table depth in this study)
         """
+        print('Build FFNN Model......')
+
         X = T.fmatrix()
         Y = T.fmatrix()
         learning_rate = T.fscalar()
@@ -219,6 +215,8 @@ class Double_LSTM_Model:
         output (water table depth in this study)
     """
     def __init__(self, num_input=256, num_hidden=[64,64], num_output=1, clip_at=0.0, scale_norm=0.0):
+        print('Build Double_LSTM Model......')
+
         X = T.fmatrix()
         Y = T.fmatrix()
         learning_rate = T.fscalar()

@@ -9,6 +9,7 @@ from utils import floatX
 
 
 class NNLayer(object):
+
     def __init__(self):
         self.params = []
 
@@ -186,6 +187,5 @@ class DropoutLayer(NNLayer):
         retain_prob = 1 - dropout_prob
         srng = RandomStreams(seed=1234)
         X *= srng.binomial(X.shape, p=retain_prob, dtype=theano.config.floatX)
-        if dropout_prob != 0.0:
-            X *= retain_prob
+        X /= retain_prob
         return X
