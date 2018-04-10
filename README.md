@@ -1,54 +1,67 @@
-# LSTM-water-table-depth-prediction
+# LSTM based Model for Water Table Depth Prediction
 
-## Introduction
-This is an implementation of [DeepLab-Xception](https://arxiv.org/pdf/1802.02611) on Python 3, TFSlim and TensorFlow for semantic segmentation on the [Penn-Fudan Pedestrian Detection and Segmentation Database](http://www.cis.upenn.edu/~jshi/ped_html/).The model generates segmentation masks for the image. It's based on a modified Xception backbone.
-## Status
-In progress
-## Requirements
+### Introduction
+This is the implementation of our work *Developing a Long Short-Term Memory (LSTM) based Model for Predicting Water Table Depth in Agricultural Areas*.
+
+### Requirements
 ```
-python>=3.5.2
+Python3.x
 Theano>=1.0.1
 numpy>=1.14.0
-scipy>=1.0.0
-opencv-python>=3.3.0
-tensorflow>=1.2.0
+pandas>=0.22.0
+scikit-learn>=0.14
 ```
-## Training on  Penn-Fudan Pedestrian
-```
-python train.py --data-dir path/to/your/data --data-list path/to/your/list
-```
-To see the documentation on each of the training settings run the following:
-```
-python train.py --help
+### Installation
+The code was tested with Python 3.5. To use this code, please do:
+
+
+0. Clone the repo:
+    ```Shell
+    git https://github.com/jfzhang95/LSTM-water-table-depth-prediction
+    cd LSTM-water-table-depth-prediction
+    ```
+ 
+1. Install dependencies:
+    ```Shell
+    pip install Theano matplotlib numpy pandas scikit-learn
+    ```    
+  
+2. To try the demo version of this code, please run:
+    ```Shell
+    python demo.py
+    ```
+
+If installed correctly, the result should look like this:
+![results](doc/results.png)
+
+Noted that the demo data are processed manually,  so they are not real data, but they still can reflect the correlation between the original data.
+
+### Tutorials
+A model training and testing framework can be defined as:
+ 
+```python
+def LSTM_FC_prediction(X, Y, X_test=None, iters=20000, learning_rate=1e-4, dropout_prob=0.5):
+    if dropout_prob > 1. or dropout_prob < 0.:
+        raise Exception('Dropout level must be in interval [0, 1]')
+    num_month = Y.shape[0]
+    input_shape = X.shape[1]
+    model = LSTM_FC_Model(num_input=input_shape, num_hidden=[40], num_output=1)
+    print('Start training......')
+    for iter in range(iters + 1):
+        loss = model.fit(X, Y, learning_rate, dropout_prob)
+        if iter % 1000 == 0:
+            print("iteration: %s, loss: %s" % (iter, loss))
+    # Saving model
+    model.save_model_params('checkpoints/LSTM_FC_CKPT_')
+
+    print('Start predicting......')
+    Y_test = model.predict(X_test)
+    print('Done.')
+    return Y_test
 ```
 
-## Evaluation
-The following command provides the description of each of the evaluation settings:
-```
-python evaluate.py --help
-```
-## Inference
-```
-python inference.py --data-dir path/to/your/data --data-list path/to/your/list --model-dir path/to/your/model
-```
-To see the documentation on each of the inference settings run the following:
-```
-python inference.py --help
-```
-## Citation
-```
-@article{deeplabv3+,
-  author = {
-Chen, Liang-Chieh; Zhu, Yukun; Papandreou, George; Schroff, Florian; Adam, Hartwig},
-  title = {Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation},
-  booktitle = {Computer Vision and Pattern Recognition (CVPR)},
-  year = {2018}
-}
-```
-## Acknowledgment
-This repo borrows tons of code from
-1. [DrSleep/tensorflow-deeplab-resnet](https://github.com/DrSleep/tensorflow-deeplab-resnet)
-2. [hellochick/PSPNet-tensorflow](https://github.com/hellochick/PSPNet-tensorflow)
-3. [kwotsin/TensorFlow-Xception](https://github.com/kwotsin/TensorFlow-Xception)
+For more details, please see in [tuitorials](https://github.com/jfzhang95/LSTM-water-table-depth-prediction/blob/master/tutorials.ipynb).
 
+### License
+[MIT](https://github.com/jfzhang95/LSTM-water-table-depth-prediction/blob/master/LICENSE)
 
