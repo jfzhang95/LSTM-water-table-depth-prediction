@@ -26,7 +26,7 @@ def LSTM_FC_prediction(X, Y, X_test=None, iters=20000, learning_rate=1e-4, dropo
             print("iteration: %s, loss: %s" % (iter, loss))
 
     # Saving model
-    model.save_model_params('checkpoints/LSTM_FC_CKPT_')
+    model.save_model_params('checkpoints/LSTM_FC_CKPT')
 
     print('Start predicting......')
     Y_test = model.predict(X_test)
