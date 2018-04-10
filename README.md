@@ -5,11 +5,11 @@ This is the implementation of our work *Developing a Long Short-Term Memory (LST
 
 ### Requirements
 ```
-Python3.x
-Theano>=1.0.1
-numpy>=1.14.0
-pandas>=0.22.0
-scikit-learn>=0.14
+* Python3.x
+* theano>=1.0.1
+* numpy>=1.14.0
+* pandas>=0.22.0
+* scikit-learn>=0.14
 ```
 ### Installation
 The code was tested with Python 3.5. To use this code, please do:
@@ -23,7 +23,7 @@ The code was tested with Python 3.5. To use this code, please do:
  
 1. Install dependencies:
     ```Shell
-    pip install Theano matplotlib numpy pandas scikit-learn
+    pip install theano matplotlib numpy pandas scikit-learn
     ```    
   
 2. To try the demo version of this code, please run:
@@ -60,6 +60,7 @@ def LSTM_FC_prediction(X, Y, X_test=None, iters=20000, learning_rate=1e-4, dropo
     return Y_test
 ```
 For more details, please see in [tuitorials](https://github.com/jfzhang95/LSTM-water-table-depth-prediction/blob/master/tutorials.ipynb).
+
 
 ### License
 [MIT](https://github.com/jfzhang95/LSTM-water-table-depth-prediction/blob/master/LICENSE)
