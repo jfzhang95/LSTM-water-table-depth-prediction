@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+!doc/results.png
 checkpoints/*
 .ipynb_checkpoints
 
