@@ -61,9 +61,7 @@ class LSTM_FC_Model:
         loss = T.sum((Y - Y_hat) ** 2)
         params = get_params(self.layers)
 
-        # You can also use adam optimization method
         updates, grads = sgd(loss, params, learning_rate)
-        # updates, grads = adam(loss, params, learning_rate)
 
 
         self.train_func = theano.function([X, Y, learning_rate, dropout_prob], loss, updates=updates, allow_input_downcast=True)

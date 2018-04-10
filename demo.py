@@ -11,7 +11,10 @@ ss_y_dep = StandardScaler()
 def rmse(y1, y2):
     return np.sqrt(mean_squared_error(y1, y2))
 
+# Noted that the demo data are processed manually,  so they are not real data,
+# but they still can reflect the correlation between the original data.
 data = pd.read_csv('demo.csv')
+
 Inputs = data.drop('Year', axis=1).drop('Depth', axis=1)
 Outputs = data['Depth']
 
@@ -54,20 +57,19 @@ print('Done.')
 print('the value of R-squared of Evaporation is ', r2_score(Outputs[144:], y_pred_dep_))
 print('the value of Root mean squared error of Evaporation is ', rmse(Outputs[144:], y_pred_dep_))
 
-# 红线是真实数据,绿线是预测数据
-f, ax1 = plt.subplots(1, 1, sharex=True, figsize=(8, 6))
+f, ax1 = plt.subplots(1, 1, sharex=True, figsize=(6, 4))
 
-ax1.plot(Outputs[144:], color="mediumblue", linestyle="-", marker="o", linewidth=1.5, label="Measurements")
-ax1.plot(y_pred_dep_, color="r", linestyle="-", marker="s", linewidth=1.5, label="Proposed model")
+ax1.plot(Outputs[144:], color="blue", linestyle="-", linewidth=1.5, label="Measurements")
+ax1.plot(y_pred_dep_, color="green", linestyle="--", linewidth=1.5, label="Proposed model")
 
-ax1.set_title('Results', fontsize=16, fontweight='normal')
+# ax1.set_title('Results', fontsize=16, fontweight='normal')
 
 
 plt.legend(loc='upper right')
-plt.xticks(fontsize=14,fontweight='normal')
-plt.yticks(fontsize=14,fontweight='normal')
-plt.xlabel('Time (Month)', fontsize=14)
-plt.ylabel('Water table depth (m)', fontsize=14)
+plt.xticks(fontsize=8,fontweight='normal')
+plt.yticks(fontsize=8,fontweight='normal')
+plt.xlabel('Time (Month)', fontsize=10)
+plt.ylabel('Water table depth (m)', fontsize=10)
 plt.xlim(0, 25)
-plt.savefig('results.png', format='png')
+plt.savefig('doc/results.png', format='png')
 plt.show()

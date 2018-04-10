@@ -49,34 +49,3 @@ def sgd(loss, params, learning_rate, clip_at=5.0, scale_norm=5.0):
         updates[p] = p - learning_rate * grad
 
     return updates, grads
-
-
-def adam(loss, params, learning_rate=1e-1, clip_at=5.0, scale_norm=5.0):
-    updates = OrderedDict()
-    grads = T.grad(loss, params)
-
-    beta1 = 0.9
-    beta2 = 0.995
-    epsilon = 1e-8
-
-    for p, grad in zip(params, grads):
-        c = theano.shared(np.zeros_like(p.get_value(borrow=True)))
-        # if clip_at > 0.0:
-        #     grad = clip(g, clip_at)
-        # else:
-        #     grad = g
-        #
-        # if scale_norm > 0.0:
-        #     grad = scale(grad, scale_norm)
-
-        grad_norm = grad.norm(L=2)
-        grad = (T.minimum(clip_at, grad_norm) / (grad_norm + epsilon)) * grad
-
-        m = c
-        v = c
-        m = beta1 * m + (1 - beta1) * grad
-        v = beta2 * v + (1 - beta2) * (grad ** 2)
-        updates[p] = p - learning_rate * m / (T.sqrt(v) + epsilon)
-
-    return updates, grads
-
