@@ -5,11 +5,11 @@ This is the implementation of our work *Developing a Long Short-Term Memory (LST
 
 ### Requirements
 ```
-* Python3.x
-* theano>=1.0.1
-* numpy>=1.14.0
-* pandas>=0.22.0
-* scikit-learn>=0.14
+Python3.x
+theano>=1.0.1
+numpy>=1.14.0
+pandas>=0.22.0
+scikit-learn>=0.14
 ```
 ### Installation
 The code was tested with Python 3.5. To use this code, please do:
