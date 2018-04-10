@@ -34,7 +34,7 @@ The code was tested with Python 3.5. To use this code, please do:
 If installed correctly, the result should look like this:
 ![results](doc/results.png)
 
-Noted that the demo data are processed manually,  so they are not real data, but they still can reflect the correlation between the original data.
+Noted that the demo data ([demo.csv](https://github.com/jfzhang95/LSTM-water-table-depth-prediction/blob/master/demo.csv)) are processed manually,  so they are not real data, but they still can reflect the correlation between the original data.
 
 ### Tutorials
 A model training and testing framework can be defined as:
@@ -52,7 +52,7 @@ def LSTM_FC_prediction(X, Y, X_test=None, iters=20000, learning_rate=1e-4, dropo
         if iter % 1000 == 0:
             print("iteration: %s, loss: %s" % (iter, loss))
     # Saving model
-    model.save_model_params('checkpoints/LSTM_FC_CKPT_')
+    model.save_model_params('checkpoints/LSTM_FC_CKPT')
 
     print('Start predicting......')
     Y_test = model.predict(X_test)
