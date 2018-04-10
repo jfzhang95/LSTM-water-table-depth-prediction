@@ -26,7 +26,7 @@ The code was tested with Python 3.5. To use this code, please do:
     pip install theano matplotlib numpy pandas scikit-learn
     ```    
   
-2. To try the demo version of this code, please run:
+2. To try the demo code, please run:
     ```Shell
     python demo.py
     ```
