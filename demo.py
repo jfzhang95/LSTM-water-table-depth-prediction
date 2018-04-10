@@ -11,7 +11,7 @@ ss_y_dep = StandardScaler()
 def rmse(y1, y2):
     return np.sqrt(mean_squared_error(y1, y2))
 
-# Noted that the demo data are processed manually,  so they are not real data,
+# Noted that the demo data are processed manually, so they are not real data,
 # but they still can reflect the correlation between the original data.
 data = pd.read_csv('demo.csv')
 
