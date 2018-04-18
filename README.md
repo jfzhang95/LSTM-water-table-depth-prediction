@@ -37,7 +37,7 @@ If installed correctly, the result should look like this:
 Noted that the demo data ([demo.csv](https://github.com/jfzhang95/LSTM-water-table-depth-prediction/blob/master/demo.csv)) are processed manually,  so they are not real data, but they still can reflect the correlation between the original data.
 
 ### Tutorials
-A model training and testing framework can be defined as:
+A model training and testing pipeline can be defined as:
  
 ```python
 def LSTM_FC_prediction(X, Y, X_test=None, iters=20000, learning_rate=1e-4, dropout_prob=0.5):
