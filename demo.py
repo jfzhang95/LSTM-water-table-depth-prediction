@@ -13,7 +13,7 @@ def rmse(y1, y2):
 
 # Noted that the demo data are processed manually, so they are not real data,
 # but they still can reflect the correlation between the original data.
-data = pd.read_csv('demo.csv')
+data = pd.read_csv('data/demo.csv')
 
 Inputs = data.drop('Year', axis=1).drop('Depth', axis=1)
 Outputs = data['Depth']
