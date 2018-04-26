@@ -17,7 +17,7 @@ The code was tested with Python 3.5. To use this code, please do:
 
 0. Clone the repo:
     ```Shell
-    git clone https://github.com/jfzhang95/LSTM-water-table-depth-prediction
+    git clone https://github.com/jfzhang95/LSTM-water-table-depth-prediction.git
     cd LSTM-water-table-depth-prediction
     ```
  
