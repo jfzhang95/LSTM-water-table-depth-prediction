@@ -1,7 +1,7 @@
 # LSTM based Model for Water Table Depth Prediction
 
 ### Introduction
-This is the implementation of our work *Developing a Long Short-Term Memory (LSTM) based Model for Predicting Water Table Depth in Agricultural Areas*. [pdf](https://www.sciencedirect.com/science/article/pii/S0022169418303184)
+This is the implementation of our work *Developing a Long Short-Term Memory (LSTM) based Model for Predicting Water Table Depth in Agricultural Areas*. [[Paper](https://www.sciencedirect.com/science/article/pii/S0022169418303184)]
 
 ### Requirements
 ```
