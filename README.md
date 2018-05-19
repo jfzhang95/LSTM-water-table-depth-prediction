@@ -3,7 +3,7 @@
 ### Introduction
 This is a Theano implementation of our work *Developing a Long Short-Term Memory (LSTM) based Model for Predicting Water Table Depth in Agricultural Areas*. [[Paper](https://www.sciencedirect.com/science/article/pii/S0022169418303184)]
 
-**NEW: PyTorch implementation also available: [Water-Table-Depth-Prediction-PyTorch](https://github.com/jfzhang95/Water-Table-Depth-Prediction-PyTorch/blob/master/README.md)!**
+**NEW: PyTorch implementation also available: [Water-Table-Depth-Prediction-PyTorch]https://github.com/jfzhang95/Water-Table-Depth-Prediction-PyTorch)!**
 
 ### Requirements
 ```
