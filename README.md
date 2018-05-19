@@ -1,7 +1,9 @@
 # LSTM based Model for Water Table Depth Prediction
 
 ### Introduction
-This is the implementation of our work *Developing a Long Short-Term Memory (LSTM) based Model for Predicting Water Table Depth in Agricultural Areas*. [[Paper](https://www.sciencedirect.com/science/article/pii/S0022169418303184)]
+This is a Theano implementation of our work *Developing a Long Short-Term Memory (LSTM) based Model for Predicting Water Table Depth in Agricultural Areas*. [[Paper](https://www.sciencedirect.com/science/article/pii/S0022169418303184)]
+
+**NEW: PyTorch implementation also available: [Water-Table-Depth-Prediction-PyTorch](https://github.com/jfzhang95/Water-Table-Depth-Prediction-PyTorch/blob/master/README.md)!**
 
 ### Requirements
 ```
@@ -61,6 +63,17 @@ def LSTM_FC_prediction(X, Y, X_test=None, iters=20000, learning_rate=1e-4, dropo
 ```
 For more details, please see in [tuitorials](https://github.com/jfzhang95/LSTM-water-table-depth-prediction/blob/master/tutorials.ipynb).
 
+### Citation
+If you think our code is useful, please consider citing the following paper:
+
+	@article{zjf18,
+	  journal        = {Journal of Hydrology},
+	  title          = {Developing a Long Short-Term Memory (LSTM) based Model for Predicting Water Table Depth in Agricultural Areas},
+	  author         = {J.F. Zhang, Y. Zhu, X.P. Zhang, M. Ye, J.Z. Yang},
+	  year           = {2018},
+	  volume         = {561},
+	  pages          = {918-929}
+	}
 
 ### License
 [MIT](https://github.com/jfzhang95/LSTM-water-table-depth-prediction/blob/master/LICENSE)
