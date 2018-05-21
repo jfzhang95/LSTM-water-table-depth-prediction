@@ -69,7 +69,7 @@ If you think our code is useful, please consider citing the following paper:
 	@article{zjf18,
 	  journal        = {Journal of Hydrology},
 	  title          = {Developing a Long Short-Term Memory (LSTM) based Model for Predicting Water Table Depth in Agricultural Areas},
-	  author         = {J.F. Zhang, Y. Zhu, X.P. Zhang, M. Ye, J.Z. Yang},
+	  author         = {Jianfeng Zhang, Yan Zhu, Xiaoping Zhang, Ming Ye and Jinzhong Yang},
 	  year           = {2018},
 	  volume         = {561},
 	  pages          = {918-929}
