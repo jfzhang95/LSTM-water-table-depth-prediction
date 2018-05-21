@@ -7,11 +7,11 @@ This is a Theano implementation of our work *Developing a Long Short-Term Memory
 
 ### Requirements
 ```
-Python3.x
-theano>=1.0.1
-numpy>=1.14.0
-pandas>=0.22.0
-scikit-learn>=0.14
+Python3.x(Tested with 3.5)
+theano(Tested with 1.0.1)
+numpy
+pandas
+scikit-learn
 ```
 ### Installation
 The code was tested with Python 3.5. To use this code, please do:
