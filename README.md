@@ -46,7 +46,7 @@ def LSTM_FC_prediction(X, Y, X_test=None, iters=20000, learning_rate=1e-4, dropo
     if dropout_prob > 1. or dropout_prob < 0.:
         raise Exception('Dropout level must be in interval [0, 1]')
     num_month = Y.shape[0]
-    input_shape = X.shape[1]
+    input_shathinkpe = X.shape[1]
     model = LSTM_FC_Model(num_input=input_shape, num_hidden=[40], num_output=1)
     print('Start training......')
     for iter in range(iters + 1):
@@ -64,7 +64,7 @@ def LSTM_FC_prediction(X, Y, X_test=None, iters=20000, learning_rate=1e-4, dropo
 For more details, please see in [tuitorials](https://github.com/jfzhang95/LSTM-water-table-depth-prediction/blob/master/tutorials.ipynb).
 
 ### Citation
-If you think our code is useful, please consider citing the following paper:
+If you  use this code, please consider citing the following paper:
 
 	@article{zjf18,
 	  journal        = {Journal of Hydrology},
